@@ -1,2 +1,2 @@
 # uppersecondarymathresources
-Building secondary math resources
+Building my secondary math resources
