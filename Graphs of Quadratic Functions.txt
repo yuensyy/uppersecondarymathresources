@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadratic Graphs Explorer - Cambridge O-Level Mathematics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a5f7a;
+            --secondary: #057a8c;
+            --accent: #f4a261;
+            --highlight: #e76f51;
+            --bg: #faf9f6;
+            --card-bg: #ffffff;
+            --text: #2d3436;
+            --text-light: #636e72;
+            --border: #dfe6e9;
+            --success: #00b894;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(26, 95, 122, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(231, 111, 81, 0.03) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            margin: -2rem -2rem 3rem -2rem;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .card h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--accent);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            bottom: -2px;
+        }
+
+        .tab:hover {
+            color: var(--primary);
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 95, 122, 0.1);
+        }
+
+        .slider-group {
+            margin-bottom: 2rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: var(--secondary);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            border: none;
+        }
+
+        .value-display {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        canvas {
+            width: 100%;
+            height: 500px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .equation-display {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text);
+            text-align: center;
+        }
+
+        .math {
+            font-style: italic;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(26, 95, 122, 0.05), rgba(5, 122, 140, 0.05));
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(26, 95, 122, 0.1);
+        }
+
+        .info-box strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-box span {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .concept-section {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: linear-gradient(to right, rgba(244, 162, 97, 0.1), rgba(231, 111, 81, 0.1));
+            border-radius: 12px;
+            border: 1px solid rgba(244, 162, 97, 0.3);
+        }
+
+        .concept-section h3 {
+            font-family: 'Crimson Pro', serif;
+            color: var(--highlight);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .concept-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .concept-section li {
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+
+        .concept-section li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(26, 95, 122, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .key-points {
+            background: rgba(0, 184, 148, 0.1);
+            border-left: 4px solid var(--success);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .key-points h3 {
+            color: var(--success);
+            margin-bottom: 1rem;
+            font-family: 'Crimson Pro', serif;
+        }
+
+        @media (max-width: 968px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Quadratic Graphs Explorer</h1>
+            <p class="subtitle">Cambridge O-Level Mathematics | Interactive Learning Tool</p>
+        </header>
+
+        <div class="main-grid">
+            <div class="card">
+                <h2><span class="badge">Controls</span> Adjust Parameters</h2>
+                
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('factored')">Factored Form</button>
+                    <button class="tab" onclick="switchTab('completed')">Completing the Square</button>
+                </div>
+
+                <!-- Factored Form -->
+                <div id="factored-content" class="tab-content active">
+                    <div class="equation-display">
+                        <span class="math">y = ax² + bx + c</span>
+                    </div>
+                    
+                    <div class="equation-display" style="margin-top: 1rem; background: linear-gradient(135deg, rgba(0, 184, 148, 0.1), rgba(0, 168, 132, 0.1)); border-left-color: var(--success);">
+                        <span class="math" id="expanded-form-display">y = x² + x - 6</span>
+                    </div>
+                    
+                    <div class="equation-display" style="margin-top: 1rem; background: linear-gradient(135deg, rgba(231, 111, 81, 0.1), rgba(244, 162, 97, 0.1)); border-left-color: var(--highlight);">
+                        <span class="math" id="factored-form-display">y = (x + 2)(x - 3)</span>
+                    </div>
+
+                    <div class="slider-group">
+                        <label>Coefficient a: <span id="a-value-factored">1</span></label>
+                        <input type="range" id="a-factored" min="-3" max="3" step="0.1" value="1">
+                        <div class="value-display">
+                            <span>Narrow/Opens Down</span>
+                            <span>Wide/Opens Up</span>
+                        </div>
+                    </div>
+
+                    <div class="slider-group">
+                        <label>Coefficient b: <span id="b-value">1</span></label>
+                        <input type="range" id="b-slider" min="-10" max="10" step="1" value="1">
+                    </div>
+
+                    <div class="slider-group">
+                        <label>Coefficient c: <span id="c-value">-6</span></label>
+                        <input type="range" id="c-slider" min="-10" max="10" step="1" value="-6">
+                    </div>
+
+                    <div class="concept-section">
+                        <h3>🎯 Multiplication Frame (Factored Form)</h3>
+                        <ul>
+                            <li><strong>Expanded form:</strong> y = ax² + bx + c</li>
+                            <li><strong>Factored form:</strong> y = a(x - p)(x - q)</li>
+                            <li><strong>Roots/x-intercepts:</strong> When y = 0, x = p and x = q</li>
+                            <li><strong>Turning point x-coordinate:</strong> x = (p + q)/2 (midpoint of roots)</li>
+                            <li><strong>Coefficient a:</strong> Controls width and direction
+                                <ul style="margin-top: 0.5rem;">
+                                    <li>a > 0: Opens upward (U-shape)</li>
+                                    <li>a < 0: Opens downward (∩-shape)</li>
+                                    <li>a > 1: Narrow parabola</li>
+                                    <li>0 < a < 1: Wide parabola</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Completed Square Form -->
+                <div id="completed-content" class="tab-content">
+                    <div class="equation-display">
+                        <span class="math">y = ax² + bx + c</span>
+                    </div>
+                    
+                    <div class="equation-display" style="margin-top: 1rem; background: linear-gradient(135deg, rgba(0, 184, 148, 0.1), rgba(0, 168, 132, 0.1)); border-left-color: var(--success);">
+                        <span class="math" id="expanded-form-display-2">y = x² - 4</span>
+                    </div>
+                    
+                    <div class="equation-display" style="margin-top: 1rem; background: linear-gradient(135deg, rgba(231, 111, 81, 0.1), rgba(244, 162, 97, 0.1)); border-left-color: var(--highlight);">
+                        <span class="math" id="completed-form-display">y = x² - 4</span>
+                    </div>
+
+                    <div class="slider-group">
+                        <label>Coefficient a: <span id="a-value-completed">1</span></label>
+                        <input type="range" id="a-completed" min="-3" max="3" step="0.1" value="1">
+                        <div class="value-display">
+                            <span>Narrow/Opens Down</span>
+                            <span>Wide/Opens Up</span>
+                        </div>
+                    </div>
+
+                    <div class="slider-group">
+                        <label>Coefficient b: <span id="b-value-completed">0</span></label>
+                        <input type="range" id="b-completed" min="-10" max="10" step="1" value="0">
+                    </div>
+
+                    <div class="slider-group">
+                        <label>Coefficient c: <span id="c-value-completed">-4</span></label>
+                        <input type="range" id="c-completed" min="-10" max="10" step="1" value="-4">
+                    </div>
+                    
+                    <div class="info-box" style="margin-top: 1.5rem; background: linear-gradient(135deg, rgba(0, 184, 148, 0.1), rgba(0, 168, 132, 0.1)); border: 1px solid var(--success);">
+                        <strong style="color: var(--success);">Completed Square Form Values</strong>
+                        <div style="margin-top: 0.75rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <div>
+                                <span style="font-size: 0.85rem; color: var(--text-light); display: block;">h value:</span>
+                                <span style="font-size: 1.2rem; font-weight: 700; color: var(--text);" id="h-display">0</span>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.85rem; color: var(--text-light); display: block;">k value:</span>
+                                <span style="font-size: 1.2rem; font-weight: 700; color: var(--text);" id="k-display">-4</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="concept-section">
+                        <h3>🎯 Completing the Square</h3>
+                        <ul>
+                            <li><strong>Start with:</strong> y = ax² + bx + c</li>
+                            <li><strong>Convert to:</strong> y = a(x - h)² + k</li>
+                            <li><strong>Finding h:</strong> h = -b/(2a)</li>
+                            <li><strong>Finding k:</strong> k = c - b²/(4a)</li>
+                            <li><strong>Turning point:</strong> (h, k)</li>
+                            <li><strong>Line of symmetry:</strong> x = h (vertical line through turning point)</li>
+                            <li><strong>Minimum/Maximum:</strong>
+                                <ul style="margin-top: 0.5rem;">
+                                    <li>If a > 0: Minimum value is k (at x = h)</li>
+                                    <li>If a < 0: Maximum value is k (at x = h)</li>
+                                </ul>
+                            </li>
+                            <li><strong>Pattern observation:</strong> Notice how h and k values appear in the graph coordinates!</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-primary" onclick="generateRandom()">Random Example</button>
+                    <button class="btn-secondary" onclick="resetValues()">Reset</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📊 Graph Visualization</h2>
+                <canvas id="graph-canvas"></canvas>
+                
+                <div class="info-grid">
+                    <div class="info-box">
+                        <strong>Turning Point</strong>
+                        <span id="vertex-display">(0, -6)</span>
+                    </div>
+                    <div class="info-box">
+                        <strong>Line of Symmetry</strong>
+                        <span id="axis-display">x = 0</span>
+                    </div>
+                    <div class="info-box">
+                        <strong>Y-intercept</strong>
+                        <span id="y-intercept-display">(0, -6)</span>
+                    </div>
+                    <div class="info-box">
+                        <strong>X-intercepts (Roots)</strong>
+                        <span id="x-intercepts-display">(-2, 0), (3, 0)</span>
+                    </div>
+                </div>
+
+                <div class="key-points">
+                    <h3>✓ Key Exam Tips</h3>
+                    <ul>
+                        <li>Always identify the form of the equation first</li>
+                        <li>Factored form makes finding roots easy</li>
+                        <li>Completed square form shows the turning point directly</li>
+                        <li>Check whether the parabola opens up or down (sign of a)</li>
+                        <li>Practice converting between different forms</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('graph-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size
+        canvas.width = canvas.offsetWidth * 2;
+        canvas.height = canvas.offsetHeight * 2;
+        ctx.scale(2, 2);
+
+        let currentMode = 'factored';
+        
+        // Initialize values
+        let factoredParams = { a: 1, b: 1, c: -6 };
+        let completedParams = { a: 1, b: 0, c: -4 };
+
+        function switchTab(mode) {
+            currentMode = mode;
+            
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            if (mode === 'factored') {
+                document.querySelectorAll('.tab')[0].classList.add('active');
+                document.getElementById('factored-content').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                document.getElementById('completed-content').classList.add('active');
+            }
+            
+            drawGraph();
+        }
+
+        // Helper function to format numbers without unnecessary decimals
+        function formatNumber(num) {
+            if (Number.isInteger(num)) {
+                return num.toString();
+            }
+            // Round to 2 decimal places and remove trailing zeros
+            const rounded = Math.round(num * 100) / 100;
+            if (Number.isInteger(rounded)) {
+                return rounded.toString();
+            }
+            return rounded.toFixed(2).replace(/\.?0+$/, '');
+        }
+        
+        // Calculate h and k from a, b, c
+        function calculateHK(a, b, c) {
+            const h = -b / (2 * a);
+            const k = c - (b * b) / (4 * a);
+            return { h, k };
+        }
+
+        // Event listeners for factored form
+        document.getElementById('a-factored').addEventListener('input', (e) => {
+            factoredParams.a = parseFloat(e.target.value);
+            document.getElementById('a-value-factored').textContent = formatNumber(factoredParams.a);
+            updateFactoredForm();
+            drawGraph();
+        });
+
+        document.getElementById('b-slider').addEventListener('input', (e) => {
+            factoredParams.b = parseInt(e.target.value);
+            document.getElementById('b-value').textContent = factoredParams.b;
+            updateFactoredForm();
+            drawGraph();
+        });
+
+        document.getElementById('c-slider').addEventListener('input', (e) => {
+            factoredParams.c = parseInt(e.target.value);
+            document.getElementById('c-value').textContent = factoredParams.c;
+            updateFactoredForm();
+            drawGraph();
+        });
+        
+        function updateFactoredForm() {
+            const a = factoredParams.a;
+            const b = factoredParams.b;
+            const c = factoredParams.c;
+            
+            // Update expanded form equation
+            let expandedEq = 'y = ';
+            
+            // a coefficient
+            if (a === 1) {
+                expandedEq += 'x²';
+            } else if (a === -1) {
+                expandedEq += '-x²';
+            } else {
+                expandedEq += formatNumber(a) + 'x²';
+            }
+            
+            // b coefficient
+            if (b !== 0) {
+                if (b === 1) {
+                    expandedEq += ' + x';
+                } else if (b === -1) {
+                    expandedEq += ' - x';
+                } else if (b > 0) {
+                    expandedEq += ' + ' + b + 'x';
+                } else {
+                    expandedEq += ' - ' + (-b) + 'x';
+                }
+            }
+            
+            // c coefficient
+            if (c !== 0) {
+                if (c > 0) {
+                    expandedEq += ' + ' + c;
+                } else {
+                    expandedEq += ' - ' + (-c);
+                }
+            }
+            
+            document.getElementById('expanded-form-display').textContent = expandedEq;
+            
+            // Update factorized form
+            const discriminant = b * b - 4 * a * c;
+            
+            if (discriminant >= 0) {
+                const sqrtDisc = Math.sqrt(discriminant);
+                const root1 = (-b - sqrtDisc) / (2 * a);
+                const root2 = (-b + sqrtDisc) / (2 * a);
+                
+                let factoredEq = 'y = ';
+                
+                // Add leading coefficient if not 1
+                if (a !== 1 && a !== -1) {
+                    factoredEq += formatNumber(a);
+                } else if (a === -1) {
+                    factoredEq += '-';
+                }
+                
+                // Format first factor (x - root1)
+                if (root1 === 0) {
+                    factoredEq += 'x';
+                } else if (root1 > 0) {
+                    factoredEq += '(x - ' + formatNumber(root1) + ')';
+                } else {
+                    factoredEq += '(x + ' + formatNumber(-root1) + ')';
+                }
+                
+                // Format second factor (x - root2)
+                if (root2 === 0) {
+                    factoredEq += 'x';
+                } else if (root2 > 0) {
+                    factoredEq += '(x - ' + formatNumber(root2) + ')';
+                } else {
+                    factoredEq += '(x + ' + formatNumber(-root2) + ')';
+                }
+                
+                document.getElementById('factored-form-display').textContent = factoredEq;
+            } else {
+                document.getElementById('factored-form-display').textContent = 'No real factors (discriminant < 0)';
+            }
+        }
+
+        // Event listeners for completed square form
+        document.getElementById('a-completed').addEventListener('input', (e) => {
+            completedParams.a = parseFloat(e.target.value);
+            document.getElementById('a-value-completed').textContent = formatNumber(completedParams.a);
+            updateCompletedForm();
+            drawGraph();
+        });
+
+        document.getElementById('b-completed').addEventListener('input', (e) => {
+            completedParams.b = parseInt(e.target.value);
+            document.getElementById('b-value-completed').textContent = completedParams.b;
+            updateCompletedForm();
+            drawGraph();
+        });
+
+        document.getElementById('c-completed').addEventListener('input', (e) => {
+            completedParams.c = parseInt(e.target.value);
+            document.getElementById('c-value-completed').textContent = completedParams.c;
+            updateCompletedForm();
+            drawGraph();
+        });
+        
+        function updateCompletedForm() {
+            const a = completedParams.a;
+            const b = completedParams.b;
+            const c = completedParams.c;
+            const { h, k } = calculateHK(a, b, c);
+            
+            // Update h and k displays
+            document.getElementById('h-display').textContent = formatNumber(h);
+            document.getElementById('k-display').textContent = formatNumber(k);
+            
+            // Update expanded form equation
+            let expandedEq = 'y = ';
+            
+            // a coefficient
+            if (a === 1) {
+                expandedEq += 'x²';
+            } else if (a === -1) {
+                expandedEq += '-x²';
+            } else {
+                expandedEq += formatNumber(a) + 'x²';
+            }
+            
+            // b coefficient
+            if (b !== 0) {
+                if (b === 1) {
+                    expandedEq += ' + x';
+                } else if (b === -1) {
+                    expandedEq += ' - x';
+                } else if (b > 0) {
+                    expandedEq += ' + ' + b + 'x';
+                } else {
+                    expandedEq += ' - ' + (-b) + 'x';
+                }
+            }
+            
+            // c coefficient
+            if (c !== 0) {
+                if (c > 0) {
+                    expandedEq += ' + ' + c;
+                } else {
+                    expandedEq += ' - ' + (-c);
+                }
+            }
+            
+            document.getElementById('expanded-form-display-2').textContent = expandedEq;
+            
+            // Update completed square form equation
+            let completedEq = 'y = ';
+            
+            // Add leading coefficient if not 1
+            if (a !== 1 && a !== -1) {
+                completedEq += formatNumber(a);
+            } else if (a === -1) {
+                completedEq += '-';
+            }
+            
+            // Format (x - h)² part
+            if (h === 0) {
+                completedEq += 'x²';
+            } else if (h > 0) {
+                completedEq += '(x - ' + formatNumber(h) + ')²';
+            } else {
+                completedEq += '(x + ' + formatNumber(-h) + ')²';
+            }
+            
+            // Format k part
+            if (k !== 0) {
+                if (k > 0) {
+                    completedEq += ' + ' + formatNumber(k);
+                } else {
+                    completedEq += ' - ' + formatNumber(-k);
+                }
+            }
+            
+            document.getElementById('completed-form-display').textContent = completedEq;
+        }
+
+        function drawGraph() {
+            const width = canvas.offsetWidth;
+            const height = canvas.offsetHeight;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Graph settings
+            const scale = 30;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            
+            // Draw grid
+            ctx.strokeStyle = '#e9ecef';
+            ctx.lineWidth = 1;
+            
+            for (let i = -10; i <= 10; i++) {
+                // Vertical lines
+                ctx.beginPath();
+                ctx.moveTo(centerX + i * scale, 0);
+                ctx.lineTo(centerX + i * scale, height);
+                ctx.stroke();
+                
+                // Horizontal lines
+                ctx.beginPath();
+                ctx.moveTo(0, centerY + i * scale);
+                ctx.lineTo(width, centerY + i * scale);
+                ctx.stroke();
+            }
+            
+            // Draw axes
+            ctx.strokeStyle = '#2d3436';
+            ctx.lineWidth = 2;
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(width, centerY);
+            ctx.stroke();
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, height);
+            ctx.stroke();
+            
+            // Draw axis labels
+            ctx.fillStyle = '#636e72';
+            ctx.font = 'bold 12px DM Sans';
+            ctx.textAlign = 'center';
+            
+            for (let i = -10; i <= 10; i++) {
+                if (i !== 0) {
+                    ctx.fillText(i, centerX + i * scale, centerY + 20);
+                    ctx.fillText(i, centerX - 20, centerY - i * scale);
+                }
+            }
+            
+            ctx.fillText('x', width - 20, centerY + 20);
+            ctx.fillText('y', centerX + 20, 20);
+            
+            // Calculate quadratic values
+            let a, vertex, roots, yIntercept;
+            
+            if (currentMode === 'factored') {
+                a = factoredParams.a;
+                const b = factoredParams.b;
+                const c = factoredParams.c;
+                
+                // Calculate turning point using vertex formula
+                const vx = -b / (2 * a);
+                const vy = a * vx * vx + b * vx + c;
+                vertex = { x: vx, y: vy };
+                
+                // Calculate roots using quadratic formula
+                const discriminant = b * b - 4 * a * c;
+                roots = [];
+                if (discriminant > 0) {
+                    const sqrtDisc = Math.sqrt(discriminant);
+                    roots.push({ x: (-b - sqrtDisc) / (2 * a), y: 0 });
+                    roots.push({ x: (-b + sqrtDisc) / (2 * a), y: 0 });
+                } else if (discriminant === 0) {
+                    roots.push({ x: -b / (2 * a), y: 0 });
+                }
+                
+                // Y-intercept (x=0)
+                yIntercept = { x: 0, y: c };
+                
+            } else {
+                a = completedParams.a;
+                const b = completedParams.b;
+                const c = completedParams.c;
+                
+                // Calculate h and k from a, b, c
+                const h = -b / (2 * a);
+                const k = c - (b * b) / (4 * a);
+                
+                vertex = { x: h, y: k };
+                
+                // Calculate roots using quadratic formula
+                const discriminant = b * b - 4 * a * c;
+                roots = [];
+                if (discriminant > 0) {
+                    const sqrtDisc = Math.sqrt(discriminant);
+                    roots.push({ x: (-b - sqrtDisc) / (2 * a), y: 0 });
+                    roots.push({ x: (-b + sqrtDisc) / (2 * a), y: 0 });
+                } else if (discriminant === 0) {
+                    roots.push({ x: -b / (2 * a), y: 0 });
+                }
+                
+                // Y-intercept
+                yIntercept = { x: 0, y: c };
+            }
+            
+            // Draw parabola
+            ctx.strokeStyle = '#1a5f7a';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            let firstPoint = true;
+            for (let x = -10; x <= 10; x += 0.05) {
+                let y;
+                if (currentMode === 'factored') {
+                    y = factoredParams.a * x * x + factoredParams.b * x + factoredParams.c;
+                } else {
+                    y = completedParams.a * x * x + completedParams.b * x + completedParams.c;
+                }
+                
+                const screenX = centerX + x * scale;
+                const screenY = centerY - y * scale;
+                
+                if (screenY >= -100 && screenY <= height + 100) {
+                    if (firstPoint) {
+                        ctx.moveTo(screenX, screenY);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(screenX, screenY);
+                    }
+                }
+            }
+            ctx.stroke();
+            
+            // Draw turning point
+            ctx.fillStyle = '#e76f51';
+            ctx.beginPath();
+            ctx.arc(
+                centerX + vertex.x * scale,
+                centerY - vertex.y * scale,
+                6,
+                0,
+                2 * Math.PI
+            );
+            ctx.fill();
+            
+            // Draw turning point label
+            ctx.fillStyle = '#e76f51';
+            ctx.font = 'bold 13px DM Sans';
+            ctx.fillText(
+                `Turning Point (${formatNumber(vertex.x)}, ${formatNumber(vertex.y)})`,
+                centerX + vertex.x * scale + 15,
+                centerY - vertex.y * scale - 10
+            );
+            
+            // Draw roots
+            ctx.fillStyle = '#00b894';
+            roots.forEach((root, index) => {
+                ctx.beginPath();
+                ctx.arc(
+                    centerX + root.x * scale,
+                    centerY - root.y * scale,
+                    5,
+                    0,
+                    2 * Math.PI
+                );
+                ctx.fill();
+                
+                ctx.font = 'bold 12px DM Sans';
+                ctx.fillText(
+                    `(${formatNumber(root.x)}, 0)`,
+                    centerX + root.x * scale,
+                    centerY + 20
+                );
+            });
+            
+            // Draw y-intercept
+            ctx.fillStyle = '#f4a261';
+            ctx.beginPath();
+            ctx.arc(
+                centerX + yIntercept.x * scale,
+                centerY - yIntercept.y * scale,
+                5,
+                0,
+                2 * Math.PI
+            );
+            ctx.fill();
+            
+            // Update info displays
+            document.getElementById('vertex-display').textContent = 
+                `(${formatNumber(vertex.x)}, ${formatNumber(vertex.y)})`;
+            document.getElementById('axis-display').textContent = 
+                `x = ${formatNumber(vertex.x)}`;
+            document.getElementById('y-intercept-display').textContent = 
+                `(0, ${formatNumber(yIntercept.y)})`;
+            
+            if (roots.length === 2) {
+                document.getElementById('x-intercepts-display').textContent = 
+                    `(${formatNumber(roots[0].x)}, 0), (${formatNumber(roots[1].x)}, 0)`;
+            } else if (roots.length === 1) {
+                document.getElementById('x-intercepts-display').textContent = 
+                    `(${formatNumber(roots[0].x)}, 0) — Double root`;
+            } else {
+                document.getElementById('x-intercepts-display').textContent = 
+                    'No real roots';
+            }
+        }
+
+        function generateRandom() {
+            if (currentMode === 'factored') {
+                factoredParams.a = Math.round((Math.random() * 4 - 2) * 2) / 2;
+                if (factoredParams.a === 0) factoredParams.a = 1;
+                factoredParams.b = Math.floor(Math.random() * 21) - 10;
+                factoredParams.c = Math.floor(Math.random() * 21) - 10;
+                
+                document.getElementById('a-factored').value = factoredParams.a;
+                document.getElementById('b-slider').value = factoredParams.b;
+                document.getElementById('c-slider').value = factoredParams.c;
+                document.getElementById('a-value-factored').textContent = formatNumber(factoredParams.a);
+                document.getElementById('b-value').textContent = factoredParams.b;
+                document.getElementById('c-value').textContent = factoredParams.c;
+                updateFactoredForm();
+            } else {
+                completedParams.a = Math.round((Math.random() * 4 - 2) * 2) / 2;
+                if (completedParams.a === 0) completedParams.a = 1;
+                completedParams.b = Math.floor(Math.random() * 21) - 10;
+                completedParams.c = Math.floor(Math.random() * 21) - 10;
+                
+                document.getElementById('a-completed').value = completedParams.a;
+                document.getElementById('b-completed').value = completedParams.b;
+                document.getElementById('c-completed').value = completedParams.c;
+                document.getElementById('a-value-completed').textContent = formatNumber(completedParams.a);
+                document.getElementById('b-value-completed').textContent = completedParams.b;
+                document.getElementById('c-value-completed').textContent = completedParams.c;
+                updateCompletedForm();
+            }
+            
+            drawGraph();
+        }
+
+        function resetValues() {
+            if (currentMode === 'factored') {
+                factoredParams = { a: 1, b: 1, c: -6 };
+                document.getElementById('a-factored').value = 1;
+                document.getElementById('b-slider').value = 1;
+                document.getElementById('c-slider').value = -6;
+                document.getElementById('a-value-factored').textContent = '1';
+                document.getElementById('b-value').textContent = '1';
+                document.getElementById('c-value').textContent = '-6';
+                updateFactoredForm();
+            } else {
+                completedParams = { a: 1, b: 0, c: -4 };
+                document.getElementById('a-completed').value = 1;
+                document.getElementById('b-completed').value = 0;
+                document.getElementById('c-completed').value = -4;
+                document.getElementById('a-value-completed').textContent = '1';
+                document.getElementById('b-value-completed').textContent = '0';
+                document.getElementById('c-value-completed').textContent = '-4';
+                updateCompletedForm();
+            }
+            
+            drawGraph();
+        }
+
+        // Initial draw
+        updateFactoredForm();
+        updateCompletedForm();
+        drawGraph();
+
+        // Redraw on window resize
+        window.addEventListener('resize', () => {
+            canvas.width = canvas.offsetWidth * 2;
+            canvas.height = canvas.offsetHeight * 2;
+            ctx.scale(2, 2);
+            drawGraph();
+        });
+    </script>
+</body>
+</html>
